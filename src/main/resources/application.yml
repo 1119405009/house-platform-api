@@ -1,0 +1,70 @@
+server:
+  port: 85
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: ${MAX_THREAD:10}
+    max-http-post-size: -1
+    max-http-header-size: 8196
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  devtools:
+    restart:
+      additional-paths: src/main/java
+      exclude: static/**,public/**
+
+# redis config
+  redis:
+    host: ${REDIS_HOST:10.8.0.8}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    timeout: 2000
+    database: ${REDIS_DATABASE:15}
+# cluster config
+#    cluster:
+#      nodes:
+#        - redis1:6379
+#        - redis2:6379
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: ${SHOW_SQL:false}
+# log info output with color
+  output:
+    ansi:
+      enabled: always
+# database config
+  datasource:
+    name: mysql
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filter: stat
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://${MYSQL_HOST_AND_PORT:10.8.0.8}/travel?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&createDatabaseIfNotExist=true&rewriteBatchedStatements=true
+      username: ${MYSQL_USERNAME:root}
+      password: ${MYSQL_PASSWORD:root}
+      initial-size: 6
+      min-idle: 2
+      max-active: 700
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
+
+# LOGGING
+logging:
+  level:
+    org:
+      hibernate:
+        sql: ${LOGGING_LEVEL_SQL:ERROR}
+        type: ${LOGGING_LEVEL_TYPE:ERROR}
+      springframework.web: ERROR
+  path: ${LOG_PATH:build/log}
